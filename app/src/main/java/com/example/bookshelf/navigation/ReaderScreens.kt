@@ -2,7 +2,7 @@ package com.example.bookshelf.navigation
 
 enum class ReaderScreens {
     SplashScreen,
-    LoginScreen,
+    ReaderLoginScreen,
     CreateAccountScreen,
     ReaderHomeScreen,
     SearchScreen,
@@ -13,7 +13,7 @@ enum class ReaderScreens {
     companion object {
         fun fromRoute(route: String): ReaderScreens = when (route?.substringBefore("/")) {
             SplashScreen.name -> SplashScreen
-            LoginScreen.name -> LoginScreen
+            ReaderLoginScreen.name -> ReaderLoginScreen
             CreateAccountScreen.name -> CreateAccountScreen
             ReaderHomeScreen.name -> ReaderHomeScreen
             SearchScreen.name -> SearchScreen
