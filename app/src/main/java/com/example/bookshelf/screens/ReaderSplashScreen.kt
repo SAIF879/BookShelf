@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bookshelf.components.ReaderLogo
 import com.example.bookshelf.navigation.ReaderScreens
 import kotlinx.coroutines.delay
 
@@ -49,10 +50,11 @@ fun ReaderSplashScreen(navController: NavController  = NavController(LocalContex
         border = BorderStroke(width = 2.dp, Color.LightGray)
     ) {
         Column(modifier = Modifier.padding(1.dp) , horizontalAlignment = Alignment.CenterHorizontally , verticalArrangement = Arrangement.Center) {
-            Text(text = "Book Shelf" , style = MaterialTheme.typography.h3 , color = Color.Blue)
+            ReaderLogo()
             Text(text = "Read to grow" , style = MaterialTheme.typography.caption , color = Color.Black)
 
         }
 
     }
 }
+
