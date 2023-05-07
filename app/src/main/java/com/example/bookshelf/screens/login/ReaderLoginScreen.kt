@@ -1,6 +1,8 @@
 package com.example.bookshelf.screens.login
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,15 +34,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.bookshelf.R
 import com.example.bookshelf.components.ReaderLogo
 import com.example.bookshelf.components.emailInput
 import com.example.bookshelf.components.passwordInput
+import com.example.bookshelf.navigation.ReaderScreens
 import java.io.StringReader
 
 @Composable
-fun ReaderLoginScreen(navController: NavController) {
+fun ReaderLoginScreen(navController: NavController , viewModal: LoginScreenViewModal = viewModel()) {
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
     }
@@ -48,11 +53,14 @@ Surface(Modifier.fillMaxSize()) {
         ReaderLogo()
         if (showLoginForm.value)
         UserForm(false ,false){email , password->
-           //TODO : FB Login
+            viewModal.signInWithEmailAndPassWord(email,password){
+                navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+            }
+
         }
         else {
             UserForm(loading = false , isCreateAccount = true ){email ,password ->
-                //TODO : Create FB ACCOUNT
+                // Create FB ACCOUNT
             }}
 
     }
@@ -108,16 +116,17 @@ fun UserForm(
         passwordVisibility = passwordVisibility,
         onAction = KeyboardActions { if (!valid) return@KeyboardActions onDone(email.value.trim(), password.value.trim()) },
     )
-    SubmitButton(textId = if(isCreateAccount) "Create Account" else "Login" , loading = loading , validInputs = valid , ){
+    SubmitButton(textId = if(isCreateAccount) "Create Account" else "Login" , loading = loading , validInputs = valid , context = LocalContext.current ){
         onDone(email.value.trim(), password.value.trim())
         keyboardController?.hide()
     }
 }
 
 @Composable
-fun SubmitButton(textId: String, loading: Boolean, validInputs: Boolean , onClick : () -> Unit) {
+fun SubmitButton(textId: String, loading: Boolean, validInputs: Boolean ,context : Context, onClick : () -> Unit) {
 
-    Button(onClick = {onClick} , modifier = Modifier
+    Button(onClick = {onClick.invoke()
+                     } , modifier = Modifier
         .padding(3.dp)
         .fillMaxWidth() , enabled = !loading && validInputs , shape = CircleShape ) {
         if (loading) CircularProgressIndicator(modifier = Modifier.size(25.dp))  else Text(text = textId , modifier = Modifier.padding(5.dp))
