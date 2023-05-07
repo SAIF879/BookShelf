@@ -60,7 +60,9 @@ Surface(Modifier.fillMaxSize()) {
         }
         else {
             UserForm(loading = false , isCreateAccount = true ){email ,password ->
-                // Create FB ACCOUNT
+              viewModal.createUsersWithEmailAndPassWord(email , password){
+                  navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+              }
             }}
 
     }
@@ -99,7 +101,7 @@ fun UserForm(
         .verticalScroll(rememberScrollState())
 
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        if (!isCreateAccount) Text(text = stringResource(id = R.string.create_account) , modifier = Modifier.padding(4.dp)) else Text(text = "")
+        if (!isCreateAccount) Text(text = stringResource(id = R.string.create_account) , modifier = Modifier.padding(4.dp)) else Text(text = "Welcome")
         Spacer(modifier = Modifier.size(5.dp))
         emailInput(
             modifier = Modifier,
